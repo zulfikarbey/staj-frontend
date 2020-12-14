@@ -2,17 +2,23 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getStudentListFromApi } from "../../redux/Modules/StudentList/studentlist";
+import {
+  getStudentListFromApi,
+  updateStudentToApi,
+  addStudentToApi,
+} from "../../redux/Modules/StudentList/studentlist";
 
 import {
   ListGroup,
   Container,
   Row,
+  Alert,
   Col,
   Button,
   Modal,
   InputGroup,
   FormControl,
+  Spinner,
 } from "react-bootstrap";
 
 export default function StudentCrud() {
@@ -22,6 +28,13 @@ export default function StudentCrud() {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
+  const [isNew, setIsNew] = useState(false);
+
+  const [_id, setId] = useState("");
+  const [number, setNumber] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [registerDate, setRegisterDate] = useState("");
 
   useEffect(() => {
     dispatch(getStudentListFromApi(auth.token));
@@ -29,6 +42,25 @@ export default function StudentCrud() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  function addNewStudent() {
+    setIsNew(true);
+    setNumber("");
+    setName("");
+    setRegisterDate("");
+    setEmail("");
+    handleShow();
+  }
+  function updateExistStudent(_id, _number, _name, _email, _registerDate) {
+    setIsNew(false);
+    setId(_id);
+    setNumber(_number);
+    setName(_name);
+    var date = moment(_registerDate).format("YYYY-MM-DD");
+    setRegisterDate(date);
+    setEmail(_email);
+    handleShow();
+  }
 
   function getDays(date) {
     var now = moment(new Date()); //todays date
@@ -40,26 +72,45 @@ export default function StudentCrud() {
 
   return (
     <Container>
+      <Alert variant={"secondary"}>
+        <Button onClick={() => addNewStudent()}>Ekle</Button>
+      </Alert>
       <ListGroup>
         <ListGroup.Item>Öğrenciler</ListGroup.Item>
-        {studentlist.map((item) => (
-          <ListGroup.Item action variant="light">
-            <Row>
-              {" "}
-              <Col md={3}>No: {item.number}</Col>
-              <Col md={3}>Adı: {item.name}</Col>
-              <Col md={3}>Sınıfı: {getDays(item.registerDate)} </Col>
-              <Col md={3}>
-                <Button size={"sm"} onClick={() => handleShow()}>
-                  Düzenle
-                </Button>
-              </Col>
-            </Row>
-          </ListGroup.Item>
-        ))}
+        {studentlist.length === 0 ? (
+          <center>
+            <Spinner animation="border" />
+          </center>
+        ) : (
+          studentlist.map((item) => (
+            <ListGroup.Item action variant="light">
+              <Row>
+                {" "}
+                <Col md={3}>No: {item.number}</Col>
+                <Col md={3}>Adı: {item.name}</Col>
+                <Col md={3}>Sınıfı: {getDays(item.registerDate)} </Col>
+                <Col md={3}>
+                  <Button
+                    size={"sm"}
+                    onClick={() => {
+                      updateExistStudent(
+                        item._id,
+                        item.number,
+                        item.name,
+                        item.email,
+                        item.registerDate
+                      );
+                    }}
+                  >
+                    Düzenle
+                  </Button>
+                </Col>
+              </Row>
+            </ListGroup.Item>
+          ))
+        )}
       </ListGroup>
 
-      <button onClick={() => console.log("ekledim")}>Ekle</button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Öğrenci</Modal.Title>
@@ -69,32 +120,73 @@ export default function StudentCrud() {
             <InputGroup.Prepend>
               <InputGroup.Text>Numarası</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl />
+            <FormControl
+              onChange={(e) => setNumber(e.target.value)}
+              value={number}
+            />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
               <InputGroup.Text>Ad soyad</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl />
+            <FormControl
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+            />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
               <InputGroup.Text>e-mail</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl />
+            <FormControl
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
+            />
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
               <InputGroup.Text>Kayıt Tarihi</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl />
+            <FormControl
+              type={"date"}
+              onChange={(e) => setRegisterDate(e.target.value)}
+              value={registerDate}
+            />
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              handleClose();
+            }}
+          >
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              isNew
+                ? dispatch(
+                    addStudentToApi(auth.token, {
+                      name: name,
+                      email: email,
+                      registerDate: registerDate,
+                      number: number,
+                    })
+                  )
+                : dispatch(
+                    updateStudentToApi(auth.token, {
+                      _id: _id,
+                      name: name,
+                      email: email,
+                      registerDate: registerDate,
+                      number: number,
+                    })
+                  );
+              handleClose();
+            }}
+          >
             Save Changes
           </Button>
         </Modal.Footer>

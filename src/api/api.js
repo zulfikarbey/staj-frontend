@@ -10,10 +10,20 @@ export async function signin(username, password, callback) {
   callback(response.data);
 }
 
-export async function getFromApi(url, token, callback) {
+export async function getFromApi(url, _data, token, callback) {
   const fullurl = URL + url;
-  const response = await axios.get(fullurl, {
-    headers: { authorization: token },
-  });
+
+
+  const options = {
+    method: "POST",
+    url: fullurl,
+    data: _data,
+    headers: {
+      authorization: token,
+      
+    },
+  };
+
+  const response = await axios.request(options);
   callback(response.data);
 }
