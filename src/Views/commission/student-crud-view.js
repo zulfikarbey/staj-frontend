@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
+
+import { getStudentListFromApi } from "../../redux/Modules/StudentList/studentlist";
 
 import {
   ListGroup,
@@ -15,9 +17,15 @@ import {
 
 export default function StudentCrud() {
   const studentlist = useSelector((state) => state.studentlist);
+  const auth = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    dispatch(getStudentListFromApi(auth.token));
+  }, []);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -37,9 +45,11 @@ export default function StudentCrud() {
         {studentlist.map((item) => (
           <ListGroup.Item action variant="light">
             <Row>
-              <Col md={4}>Adı: {item.name}</Col>
-              <Col md={4}>Sınıfı: {getDays(item.registrationDate)} </Col>
-              <Col md={4}>
+              {" "}
+              <Col md={3}>No: {item.number}</Col>
+              <Col md={3}>Adı: {item.name}</Col>
+              <Col md={3}>Sınıfı: {getDays(item.registerDate)} </Col>
+              <Col md={3}>
                 <Button size={"sm"} onClick={() => handleShow()}>
                   Düzenle
                 </Button>
@@ -49,21 +59,7 @@ export default function StudentCrud() {
         ))}
       </ListGroup>
 
-      <button
-        onClick={() =>
-          dispatch({
-            type: "ADD_STUDENT",
-            payload: {
-              name: "harun",
-              number: 31,
-              registrationDate: new Date(2014, 8, 5),
-              mail: "harun@ktu.edu.tr",
-            },
-          })
-        }
-      >
-        ekle
-      </button>
+      <button onClick={() => console.log("ekledim")}>Ekle</button>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Öğrenci</Modal.Title>
