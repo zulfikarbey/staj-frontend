@@ -66,4 +66,37 @@ export function updateSubListItemToOneInternship(token, data) {
   };
 }
 
+export function addAttachmentToSublistItemUnderInternship(token, data, ids) {
+  return async (dispatch) => {
+    console.log(ids);
+    const files = data.target.files;
 
+    const formData = new FormData();
+    formData.append("internshipID", ids.internID);
+    formData.append("sublistItemID", ids.sublistitemID);
+
+    const arr = [...files];
+
+    arr.map((item) => {
+      formData.append("myFile", item);
+    });
+
+    fetch(
+      "http://127.0.0.1:3000/internshipcrud/addAttachmentToSublistItemUnderInternship",
+      {
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+        body: formData,
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+}
