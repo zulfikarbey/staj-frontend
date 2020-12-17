@@ -4,6 +4,7 @@ import CommissionLinks from "./commission-links";
 
 import StudentCrud from "./student-crud-view";
 import Internship from './internship-view'
+import Home from './commission-home-view'
 
 export default function Commission() {
   return (
@@ -26,13 +27,7 @@ export default function Commission() {
   );
 }
 
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
+
 
 function Setting() {
   return (

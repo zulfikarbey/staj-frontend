@@ -68,7 +68,6 @@ export function updateSubListItemToOneInternship(token, data) {
 
 export function addAttachmentToSublistItemUnderInternship(token, data, ids) {
   return async (dispatch) => {
-    console.log(ids);
     const files = data.target.files;
 
     const formData = new FormData();
@@ -93,7 +92,10 @@ export function addAttachmentToSublistItemUnderInternship(token, data, ids) {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        dispatch({
+          type: "ADD_ATTACHMENT_TO_SUBLISTITEM",
+          payload: { data: data, ids: ids },
+        });
       })
       .catch((error) => {
         console.error(error);

@@ -12,7 +12,7 @@ const persistConfig = {
   // configuration object for redux-persist
   key: "root",
   storage, // define which storage to use
-  blacklist: ["studentlist"],
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer); // create a persisted reducer

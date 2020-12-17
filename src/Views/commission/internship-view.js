@@ -95,7 +95,9 @@ export default function Internship() {
     if (studentlist.length === 0) {
       dispatch(getStudentListFromApi(auth.token));
     }
-    dispatch(getInternshipList(auth.token));
+    if (internshiplist.length === 0) {
+      dispatch(getInternshipList(auth.token));
+    }
   }, []);
 
   return (
@@ -179,7 +181,21 @@ export default function Internship() {
                                         {sublistitem.title}
                                       </Alert.Heading>
                                       <Row>
-                                        <Col md={10}>{sublistitem.status}</Col>
+                                        <Col md={6}>{sublistitem.status}</Col>
+                                        <Col md={4}>
+                                          {sublistitem.attachments.map(
+                                            (item) => (
+                                              <a
+                                                href={
+                                                  "http://localhost:3000" +
+                                                  item.path
+                                                }
+                                              >
+                                                {item.path}
+                                              </a>
+                                            )
+                                          )}
+                                        </Col>
                                         <Col md={2}>
                                           <Button
                                             onClick={() =>
@@ -352,7 +368,6 @@ export default function Internship() {
                       title: doctitle,
                       status: docstatus,
                       buttonsStatus: docbuttons,
-                      attachments: [],
                     })
                   );
             }}

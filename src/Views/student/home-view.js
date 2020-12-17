@@ -1,97 +1,42 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Modal, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Button } from "react-bootstrap";
 
 import ListItem from "./Components/list-item";
 
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  getStudentInternshipList,
+  addStudentAttachmentToSublistItemUnderInternship,
+} from "../../redux/Modules/InternshipList/studentinternshiplist";
+
 export default function HomeView() {
-  const [show, setShow] = useState(false);
+  const internshiplist = useSelector((state) => state.internshiplist);
+  const auth = useSelector((state) => state.auth);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const dispatch = useDispatch();
 
-  const list = [
-    {
-      listTitle: "dönem1",
-      sublist: [
-        {
-          title: "aliveli",
-          status: "gönderin",
-          buttonsStatus: true,
-          attachments: [],
-        },
-        {
-          title: "",
-          status: "beklemede",
-          buttonsStatus: false,
-          attachments: [],
-        },
-      ],
-    },
-    {
-      listTitle: "dönem2",
-      sublist: [
-        {
-          title: "",
-          status: "beklemede",
-          buttonsStatus: false,
-          attachments: [],
-        },
-        {
-          title: "",
-          status: "beklemede",
-          buttonsStatus: false,
-          attachments: [],
-        },
-      ],
-    },
-    {
-      listTitle: "dönem3",
-      sublist: [
-        {
-          title: "",
-          status: "beklemede",
-          buttonsStatus: false,
-          attachments: [],
-        },
-        {
-          title: "",
-          status: "beklemede",
-          buttonsStatus: false,
-          attachments: [],
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    dispatch(getStudentInternshipList(auth.token));
+  }, []);
+
+  function uploadfile(data) {
+    dispatch(
+      addStudentAttachmentToSublistItemUnderInternship(
+        auth.token,
+        data.data,
+        data.ids
+      )
+    );
+  }
 
   return (
     <Container>
       <Row>
         <Col>
-          {list.map((item) => (
-            <ListItem item={item} handleShow={handleShow} />
+          {internshiplist.map((item) => (
+            <ListItem item={item} uploadfile={uploadfile} />
           ))}
-
-          <Modal show={show} onHide={handleClose} animation={false}>
-            <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              evrak1
-              <hr></hr>
-              evrak2
-              <hr></hr>
-              evrak3
-              <hr></hr>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleClose}>
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Modal>
         </Col>
       </Row>
     </Container>
