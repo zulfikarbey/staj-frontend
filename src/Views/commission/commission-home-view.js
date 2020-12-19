@@ -69,7 +69,14 @@ export default function Home() {
               <Card>
                 <Card.Header>
                   <Row>
-                    <Col md={8}>{sublistitem.title}</Col>
+                    <Col md={6}>{sublistitem.title}</Col>
+                    <Col md={2}>
+                      {sublistitem.attachments.map((item) => (
+                        <a href={"http://localhost:3000" + item.path}>
+                          {item.path}
+                        </a>
+                      ))}
+                    </Col>
                     <Col md={2}>
                       {studentlist.map((studentitem) =>
                         studentitem._id === item.studentID
