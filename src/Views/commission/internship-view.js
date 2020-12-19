@@ -102,7 +102,9 @@ export default function Internship() {
 
   return (
     <Container>
-      <Alert variant={"secondary"}>selamın aleyküm muhterem hocam</Alert>
+      <Alert variant={"secondary"}>
+        Bölümün en yakışıklı hocası hoşgeldiniz
+      </Alert>
       <Accordion>
         {studentlist.map((studentitem, id) => (
           <Card key={id}>
@@ -274,13 +276,13 @@ export default function Internship() {
                       subList: [
                         {
                           title: "Başvuru belgesi gönderme",
-                          status: "beklemede",
+                          status: "gönderi bekleniyor",
                           buttonsStatus: true,
                           attachments: [],
                         },
                         {
                           title: "Staj defteri gönderme",
-                          status: "beklemede",
+                          status: "gönderi bekleniyor",
                           buttonsStatus: true,
                           attachments: [],
                         },
@@ -325,10 +327,15 @@ export default function Internship() {
             <InputGroup.Prepend>
               <InputGroup.Text>Statüsü</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl
-              onChange={(e) => setDocStatus(e.target.value)}
+            <select
               value={docstatus}
-            />
+              onChange={(e) => setDocStatus(e.target.value)}
+            >
+              <option value="gönderi bekleniyor">Gönderi bekleniyor</option>
+              <option value="beklemede">Beklemede</option>
+              <option value="tamamlandı">Tamamlandı</option>
+              <option value="reddedildi">Reddedildi</option>
+            </select>
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Prepend>
@@ -336,10 +343,13 @@ export default function Internship() {
                 Öğrenci butonları kullanılınsın mı?
               </InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl
-              onChange={(e) => setDocButtons(e.target.value)}
+            <select
               value={docbuttons}
-            />
+              onChange={(e) => setDocButtons(e.target.value)}
+            >
+              <option value="true">Görünsün</option>
+              <option value="false">Görünmesin</option>
+            </select>
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>

@@ -34,9 +34,13 @@ export default function HomeView() {
     <Container>
       <Row>
         <Col>
-          {internshiplist.map((item) => (
+          {
+          internshiplist.length!==0?
+          internshiplist.map((item) => (
             <ListItem item={item} uploadfile={uploadfile} />
-          ))}
+          )):
+          "Atanmış Stajınız yok"
+          }
         </Col>
       </Row>
     </Container>

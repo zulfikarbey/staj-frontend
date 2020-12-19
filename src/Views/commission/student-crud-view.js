@@ -79,7 +79,7 @@ export default function StudentCrud() {
         <ListGroup.Item>Öğrenciler</ListGroup.Item>
         {studentlist.length === 0 ? (
           <center>
-            <Spinner animation="border" />
+            Henüz öğrenci girişi yapılmadı
           </center>
         ) : (
           studentlist.map((item) => (

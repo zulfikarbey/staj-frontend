@@ -93,6 +93,31 @@ export default function internshiplist(state = initialstate, action) {
       return [...arr];
     }
 
+    case "STUDENT_ADD_ATTACHMENT_TO_SUBLISTITEM": {
+      const arr = [];
+      state.map((item) => {
+        if (item._id === action.payload.ids.internID) {
+          var _sublist = [];
+          item.subList.map((sublistItem, i) => {
+            if (sublistItem._id === action.payload.ids.sublistitemID) {
+              _sublist.push(sublistItem);
+              _sublist[i].status = "beklemede";
+              _sublist[i].attachments = action.payload.data;
+            } else {
+              _sublist.push(sublistItem);
+            }
+          });
+          var _item = item;
+          _item.subList = _sublist;
+
+          arr.push(_item);
+        } else {
+          arr.push(item);
+        }
+      });
+      return [...arr];
+    }
+
     default:
       return state;
   }

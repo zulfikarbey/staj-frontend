@@ -36,7 +36,7 @@ export function addStudentAttachmentToSublistItemUnderInternship(
       .then((response) => response.json())
       .then((data) => {
         dispatch({
-          type: "ADD_ATTACHMENT_TO_SUBLISTITEM",
+          type: "STUDENT_ADD_ATTACHMENT_TO_SUBLISTITEM",
           payload: { data: data, ids: ids },
         });
       })

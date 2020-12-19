@@ -16,17 +16,24 @@ export default function ListItem(props) {
       {props.item.subList.map((item) => (
         <ListGroup.Item
           action
-          variant={item.status === "beklemede" ? "primary" : "secondary"}
+          variant={
+            item.status === "beklemede"
+              ? "primary"
+              : item.status === "tamamlandı"
+              ? "success"
+              : item.status === "reddedildi"
+              ? "danger"
+              : "dark"
+          }
         >
           <Container>
             <Row>
               <Col md={7}>{item.title}</Col>
               <Col md={2}>{item.status}</Col>
               <Col md={3}>
-                <Row>
-                  <Col>
-                    {" "}
-                    {item.buttonsStatus === "true" ? (
+                {item.buttonsStatus === "true" ? (
+                  <Row>
+                    <Col>
                       <input
                         type="file"
                         name="avatar"
@@ -41,30 +48,30 @@ export default function ListItem(props) {
                           })
                         }
                       />
-                    ) : null}{" "}
-                  </Col>
-                  <Col>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        size={"sm"}
-                        variant="success"
-                        id="dropdown-basic"
-                      >
-                        Dosyalar
-                      </Dropdown.Toggle>
+                    </Col>
+                    <Col>
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          size={"sm"}
+                          variant="success"
+                          id="dropdown-basic"
+                        >
+                          Dosyalar
+                        </Dropdown.Toggle>
 
-                      <Dropdown.Menu>
-                        {item.attachments.map((file) => (
-                          <Dropdown.Item
-                            href={"http://localhost:3000" + file.path}
-                          >
-                            {file.path}
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </Col>
-                </Row>
+                        <Dropdown.Menu>
+                          {item.attachments.map((file) => (
+                            <Dropdown.Item
+                              href={"http://localhost:3000" + file.path}
+                            >
+                              {file.path}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Col>
+                  </Row>
+                ) : null}{" "}
               </Col>
             </Row>
           </Container>

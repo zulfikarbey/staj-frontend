@@ -47,9 +47,6 @@ export default function LoginPage() {
                 type="email"
                 placeholder="Enter email"
               />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
@@ -60,9 +57,7 @@ export default function LoginPage() {
                 placeholder="Password"
               />
             </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
+
             <Button onClick={() => loginHandler()}>Login</Button>
             {status}
           </Form>

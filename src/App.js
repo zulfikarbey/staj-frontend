@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory,
+} from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -37,10 +43,19 @@ export default function App() {
 }
 
 function Main() {
+  const auth = useSelector((state) => state.auth);
+
+  const history = useHistory();
+
   return (
     <div>
-      <h1>mainpage</h1>
-      <Link to={"/login"}>login</Link>
+      <h1>Yönlendiriliyor bekleyin</h1>
+
+      {auth.isLogin
+        ? auth.isCommission
+          ? history.push("/commission/home")
+          : history.push("/student/home")
+        : history.push("/login")}
     </div>
   );
 }
