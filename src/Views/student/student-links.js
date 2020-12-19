@@ -14,13 +14,7 @@ export default function StudentLinks() {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           <Link className={"nav-link"} to="/student/home">
-            anasayfa
-          </Link>
-          <Link className={"nav-link"} to="/student/about">
-            hakkında
-          </Link>
-          <Link className={"nav-link"} to="/student/setting">
-            ayarlar
+            Anasayfa
           </Link>
         </Nav>
         <Nav>

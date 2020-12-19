@@ -103,7 +103,7 @@ export default function Internship() {
   return (
     <Container>
       <Alert variant={"secondary"}>
-        Bölümün en yakışıklı hocası hoşgeldiniz
+        Hoşgeldiniz
       </Alert>
       <Accordion>
         {studentlist.map((studentitem, id) => (

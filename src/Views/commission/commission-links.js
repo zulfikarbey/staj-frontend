@@ -22,9 +22,6 @@ export default function StudentLinks() {
           <Link className={"nav-link"} to="/commission/studentcrud">
             Öğrenci
           </Link>
-          <Link className={"nav-link"} to="/commission/setting">
-            ayarlar
-          </Link>
         </Nav>
         <Nav>
           <Link
